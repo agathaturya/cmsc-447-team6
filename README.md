@@ -5,7 +5,7 @@
 ### pipmongo
 - install it by running the command ```pip install pymongo```
 ### [flask](https://flask.palletsprojects.com/en/1.1.x/installation/)  
-create the flask env in **this** folder
+create the virtual env in **this** folder
 ### [node](https://www.npmjs.com/get-npm) 
 ### d3
 - install it by running the command ```npm install d3```

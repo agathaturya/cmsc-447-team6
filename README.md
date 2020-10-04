@@ -3,7 +3,7 @@
 ### [mongo](https://www.mongodb.com/try/download/community)  
 ### [pip](https://pip.pypa.io/en/stable/installing/)  
 ### pymongo
-- install it by running the command ```pip install pymongo```
+- install it by running the command ```pip install pymongo``` or ```pip install Flask-PyMongo```   
 ### [flask](https://flask.palletsprojects.com/en/1.1.x/installation/)  
 create the virtual env in **this** folder
 ### [node](https://www.npmjs.com/get-npm) 

@@ -23,3 +23,5 @@ create the virtual env in **this** folder
 4. Navigate to the `proj` directory, and run the command `python3 rest_api.py`
 5. Open another terminal window, and run the command `node get_data.js`
 6. In **Chrome**, open the `index.html` file
+This is what index.hml should look like when it's running:
+![Example] (https://raw.githubusercontent.com/agathaturya/cmsc-447-team6/master/ex.png?token=AF4OF2V22W33ATPHWV7FDCK7P5SVG)

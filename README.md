@@ -5,7 +5,7 @@
 ### pymongo
 - install it by running the command ```pip install pymongo``` or ```pip install Flask-PyMongo```   
 ### [flask](https://flask.palletsprojects.com/en/1.1.x/installation/)  
-create the virtual env in **this** folder
+create the virtual env in the `proj` directory   
 ### flask cors
 - install it by running the command ```pip install -U flask-cors```
 ### [node](https://www.npmjs.com/get-npm) 
@@ -24,7 +24,7 @@ create the virtual env in **this** folder
 3. Activate the python virtual environment by running a command 
  - `. venv/bin/activate` on macOS/Linux   
  - `venv\Scripts\activate` on windows
-4. Navigate to the `proj` directory, and run the command `python3 rest_api.py`. This starts the flask server.
+4. Navigate to the `proj` directory, and run the command `python3 rest_api.py`. This starts the flask server. **The python virtual environment must be active for the server to run.**
 5. Open another terminal window, navigate to the `proj` directory, and run the command `node get_data.js`. This fetches data from the Maryland Covid API, and POSTs it to a locol mongo db.
 6. In **Chrome**, open the `index.html` file from the `proj` directory. `ex.png` shows what the map should look like.  
 This is what the terminal output should look like when the flask server is running, and the `index.html` file is open:  

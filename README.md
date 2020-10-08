@@ -19,10 +19,10 @@ create the virtual env in **this** folder
 0. Install all the tools needed
 1. Clone this repo
 2. Create a python virtual environment in the `proj` directory by running a command:
- - `python3 -m venv venv` on \*nix
+ - `python3 -m venv venv` on macOS/Linux  
  -`py -3 -m venv venv` on windows
 3. Activate the python virtual environment by running a command 
- -`. venv/bin/activate` on macOS/Linux, 
+ -`. venv/bin/activate` on macOS/Linux   
  -`venv\Scripts\activate` on windows
 4. Navigate to the `proj` directory, and run the command `python3 rest_api.py`
 5. Open another terminal window, and run the command `node get_data.js`

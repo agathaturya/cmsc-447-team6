@@ -6,6 +6,8 @@
 - install it by running the command ```pip install pymongo``` or ```pip install Flask-PyMongo```   
 ### [flask](https://flask.palletsprojects.com/en/1.1.x/installation/)  
 create the virtual env in **this** folder
+### flask cors
+- install it by running the command ```pip install -U flask-cors```
 ### [node](https://www.npmjs.com/get-npm) 
 ### d3
 - install it by running the command ```npm install d3```

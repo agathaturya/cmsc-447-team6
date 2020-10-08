@@ -6,30 +6,31 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask_pymongo import PyMongo
+from flask_cors import CORS, cross_origin
 import json
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'md_covid_data'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/md_covid_data'
-
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 mongo = PyMongo(app)
 
 
 #get by obj_id
 @app.route('/get_by_id/<obj_id>', methods=['GET'])
 def get_by_obj_id(obj_id):
-  print(request.args)
-  #star = mongo.db.stars
+
   obj_id = int(obj_id)
   covid_data = mongo.db.md_covid_data
-  #s = star.find_one({'name' : name})
   result = covid_data.find_one({'obj_id' : obj_id})
   print(result)
+
   if result:
     output = result
   else:
     output = "No document found"
-  #return jsonify(output)
+  
   return json.dumps(output, default=str)
 
 @app.route('/md_covid_data.json', methods=['POST'])
@@ -49,7 +50,7 @@ def add_data():
     date = i['DATE']
     allegany = i['Allegany']
     anne_arundel = i['Anne_Arundel']
-    baltimore = i['Baltimore']
+    baltimore = i['Baltimore']#double check
     baltimore_city = i['Baltimore_City']
     calvert = i['Calvert']
     caroline = i['Caroline']
@@ -75,10 +76,11 @@ def add_data():
 
     
     doc.insert({'obj_id':obj_id, 'date':date,
+                'counties':{
     'allegany':allegany,\
-    'anne_arundel':anne_arundel,\
+    'anne arundel':anne_arundel,\
     'baltimore':baltimore, \
-    'baltimore_city':baltimore_city, \
+    'baltimore city':baltimore_city, \
     'calvert':calvert, \
     'caroline':caroline,\
     'carroll':carroll,\
@@ -91,15 +93,15 @@ def add_data():
     'howard':howard,\
     'kent':kent, \
     'montgomery':montgomery,\
-    'prince_georges':prince_georges, \
-    'queen_annes':queen_annes,\
-    'st_marys':st_marys,\
+    'prince george\'s':prince_georges, \
+    'queen anne\'s':queen_annes,\
+    'st mary\'s':st_marys,\
     'somerset':somerset,\
     'talbot':talbot,\
     'washington':washington,\
     'wicomico':wicomico, \
     'worcester':worcester, \
-    'unknown': unknown})
+                  'unknown': unknown}})
 
     count += 1
     

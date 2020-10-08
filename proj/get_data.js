@@ -20,8 +20,8 @@ xhttp.send();
 
 
 }
-getDataByObjId(10);
-
+//getDataByObjId(10);
+getNewestData();
 //get the data for one day of covid counts by county, by obj id
 function getDataByObjId(id){
     var idHttp = new XMLHttpRequest();

@@ -15,6 +15,8 @@ create the virtual env in the `proj` directory
  - install it by running the command ```npm install xmlhttprequest```
 ### d3-svg-legend
 - install it by running the command ```npm i d3-svg-legend -S```
+### browserify
+- install it by running the command ```npm install -g browserify```
 ### [postman](https://www.postman.com/downloads/)  
 - postman can be used to test API
 ### How to run it

@@ -13,6 +13,8 @@ create the virtual env in the `proj` directory
 - install it by running the command ```npm install d3```
 ### XMLHttpRequest  
  - install it by running the command ```npm install xmlhttprequest```
+### d3-svg-legend
+- install it by running the command ```npm i d3-svg-legend -S```
 ### [postman](https://www.postman.com/downloads/)  
 - postman can be used to test API
 ### How to run it

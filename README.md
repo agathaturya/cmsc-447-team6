@@ -8,6 +8,8 @@
 create the virtual env in the `proj` directory   
 ### flask cors
 - install it by running the command ```pip install -U flask-cors```
+### requests
+- install it by running the command ```pip install requests```
 ### [node](https://www.npmjs.com/get-npm) 
 ### d3
 - install it by running the command ```npm install d3```

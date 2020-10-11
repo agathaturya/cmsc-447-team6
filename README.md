@@ -5,7 +5,7 @@
 ### pymongo
 - install it by running the command ```pip install pymongo``` or ```pip install Flask-PyMongo```   
 ### [flask](https://flask.palletsprojects.com/en/1.1.x/installation/)  
-create the virtual env in the `proj` directory   
+create the virtual env in the `proj` directory. **create the virtual env before installing the rest of the python packages** 
 ### flask cors
 - install it by running the command ```pip install -U flask-cors```
 ### requests

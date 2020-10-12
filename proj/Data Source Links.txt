@@ -1,0 +1,14 @@
+Data Sources
+
+County-level general population data in csv file. There are also files for states and the us in the same repo. - https://github.com/nytimes/covid-19-data/blob/master/us-counties.csv
+
+Jail and prison data - https://www.recidiviz.org/covid/datasets
+
+Prison-county mapping - https://www.prisonersofthecensus.org/data/2010/groupquartersshapefile.html
+
+County shapefiles - https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file. html
+
+County boundary files - https://www.census.gov/geographies/mapping-files/time-series/geo/kml-cartograp hic-boundary-files.html
+
+
+

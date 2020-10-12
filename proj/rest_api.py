@@ -9,12 +9,11 @@ from flask_pymongo import PyMongo
 from flask_cors import CORS, cross_origin
 import json
 app = Flask(__name__)
-
-app.config['MONGO_DBNAME'] = 'md_covid_data'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/md_covid_data'
-cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-mongo = PyMongo(app)
+mongo_covid = PyMongo(app, uri="mongodb://localhost:27017/md_covid_data")
+mongo_prison = PyMongo(app, uri="mongodb://localhost:27017/prison_data")
+
+cors = CORS(app)
 
 
 #get by obj_id
@@ -22,7 +21,7 @@ mongo = PyMongo(app)
 def get_by_obj_id(obj_id):
 
   obj_id = int(obj_id)
-  covid_data = mongo.db.md_covid_data
+  covid_data = mongo_covid.db.md_covid_data
   result = covid_data.find_one({'obj_id' : obj_id})
   print(result)
 
@@ -45,7 +44,7 @@ def add_data():
     #each feature should be a document in db
     #{'OBJECTID': 204, 'DATE': '2020/10/04 14:00:00+00', 'Allegany': 492, 'Anne_Arundel': 10376, 'Baltimore': 18354, 'Baltimore_City': 15954, 'Calvert': 1005, 'Caroline': 662, 'Carroll': 2003, 'Cecil': 1120, 'Charles': 2851, 'Dorchester': 614, 'Frederick': 4191, 'Garrett': 76, 'Harford': 3141, 'Howard': 5234, 'Kent': 309, 'Montgomery': 22976, 'Prince_Georges': 30004, 'Queen_Annes': 680, 'Somerset': 299, 'St_Marys': 1343, 'Talbot': 578, 'Washington': 1861, 'Wicomico': 2085, 'Worcester': 1082, 'Unknown': 0}
     i = i['properties']
-    doc = mongo.db.md_covid_data
+    doc = mongo_covid.db.md_covid_data
     obj_id = i['OBJECTID']
     date = i['DATE']
     allegany = i['Allegany']
@@ -106,5 +105,55 @@ def add_data():
     count += 1
     
   return jsonify({'num_entries': count});
+
+@app.route('/prison_data.json', methods=['POST'])
+def post_prison_data():
+    
+    json_file = json.loads(request.get_json())
+    
+    data = (json_file['data'])
+  
+    count = 0
+    for i in data:
+        print(i)
+        #{'name': 'Alabama', '
+        #county': 'Autauga County', 
+        #'tract': '020200', 
+        #'block': '2008', 
+        #'correctional_population': '181', 
+        #'facility_name': 'Autauga Metro Jail', '
+        #facility_type': 'Local', 
+        #'wrong_block': '', 
+        #'comment': ''}
+        name = i['name']
+        county = i['county']
+        tract = i['tract']
+        block = i['block']
+        correctional_population = i['correctional_population']
+        facility_name = i['facility_name']
+        facility_type = i['facility_type']
+        wrong_block = i['wrong_block']
+        comment = i['comment']
+
+
+        doc = mongo_prison.db.prison_data
+
+        doc.insert({"name":name,\
+        "county":county,\
+        "tract":tract,\
+        "block": block, \
+        "correctional_population":int(correctional_population),\
+        "facility_name":facility_name,
+        "facility_type":facility_type,
+        "wrong_block":wrong_block,
+        "comment":comment
+        })
+        
+        count+=1
+
+    return jsonify({'num_entries': count});  
+        
+        
+    
 if __name__ == '__main__':
     app.run(debug=True)

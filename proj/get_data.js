@@ -1,7 +1,7 @@
 
 let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-//get data from maryland covid data api
+//gets data from maryland covid data api
 //and put in db
 function getNewestData(){
 var xhttp = new XMLHttpRequest();

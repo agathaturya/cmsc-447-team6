@@ -37,19 +37,19 @@
     var legendWidth = 40;
     var legendHeight = 100;
     var projection = d3.geoAlbers()
-	.scale( 10000 )
-	.rotate( [76.6413,0] )
-	.center( [0, 39.0458] )
-	.translate( [width/2,height/2] );
+	.scale( 1000 );
+//	.rotate( [76.6413,0] )
+//	.center( [0, 39.0458] )
+//	.translate( [width/2,height/2] );
     var path = d3.geoPath()
 	.projection(projection);
-    var min, max;
+    var minCases, maxCases, minDeaths, maxDeaths;
     var covidData = d3.map();
     var svg = d3.select("body").append("svg")
 	.attr("width", width)
 	.attr("height", height);
     var group = svg.append('g')
-    var files = ["http://localhost:5000/get_by_id/100", "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-states/us-albers-counties.json"];
+    var files = ["http://localhost:5000/get_us_data_by_date/2020-06-20/", "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-states/us-albers-counties.json"];
     var promises = [
 	d3.json(files[1]),
 	d3.json(files[0], function(d) {
@@ -57,40 +57,81 @@
 	})
     ];
     var colorScale;
-
+    var sumCases = 0;
+    var sumDeaths = 0;
+    var avgCases, avgDeaths;
+    //execute requests
     Promise.all(promises).then(ready);
-
     
+    //requests for data done, fufilled or not
     function ready(data,  error) {
+	
 	console.log(data);
-	max= data[1]['counties']['allegany'];
-	min = data[1]['counties']['allegany'];
-	var sum = 0;
+	minDeaths = Number(data[1][0]['deaths'])
+	maxDeaths = Number(data[1][0]['deaths'])
+	minCases = Number(data[1][0]['cases'])
+	maxCases = Number(data[1][0]['cases'])
+	console.log(minCases, maxCases, minDeaths, maxDeaths)
+
+	
+	
+	
 	var count = 0;
-	for(const[key, val] of Object.entries(data[1]['counties'])){
-	    sum+=val;
+	//mapping county name to # of cases
+	//also, getting min, max, and avg
+	for(x=0; x<data[1].length; x++){
+	    //sum+=val;
+	    i = data[1][x]
+	    //console.log(i, i['cases'], i['deaths'])
+	    i['cases'] = Number(i['cases']);
+	    i['deaths'] = Number(i['deaths']);
+	    sumCases += i['cases']
+	    sumDeaths += i['deaths']
 	    count++;
-	    covidData.set(key.toLowerCase(), val);
-	    if(val>max)
-			max = val;
-	    if(val<min)
-		min = val;
 	    
-        }
+	    covidData.set(i['fips'], [i['cases'], i['deaths']]);
+	    if(i['cases'] < minCases)
+		minCases = i['cases']
+	    if(i['cases'] > maxCases){
+		maxCases = i['cases']
+		console.log(i)
+	    }
+	    if(i['deaths'] < minDeaths)
+                minDeaths = i['deaths']
+            if(i['deaths'] > maxDeaths)
+                maxDeaths = i['deaths']
+	    
+	    
+	}
 	
-            
-	var avg = Math.round(sum/count);
-	
-	
-	console.log(min, Math.round((min+avg)/2), Math.round(avg), Math.round((max+avg)/2), max);
 
+	console.log(minCases, maxCases, minDeaths, maxDeaths);
+	avgCases = Math.round(sumCases/count);
+	avgDeaths = Math.round(sumDeaths/count);
+	console.log(sumCases, sumDeaths, avgCases, avgDeaths)
+	
+	
+	//color scale
+	//color #1 is min. cases
+	//color #2 is min. cases + avg cases
+	//color #3 is avg. cases
+	//color #4 is max. cases + avg cases
+	//color #5 is max. cases
+	var domain = [minCases, minCases+avgCases, Math.round((minCases+avgCases)/2), avgCases, Math.round((maxCases+avgCases)/2), maxCases];
+	var otherDomain = [0,10,100,1000,10000,100000,1000000]
+	domain = domain.sort(function(a, b){return a-b})
+	console.log(domain)
+	for (const i of domain)
+	    console.log(typeof i)
 	colorScale = d3.scaleThreshold()
-	    .domain([min, Math.round((min+avg)/2), avg, Math.round((max+avg)/2), max])
-	    .range(d3.schemeBlues[6]);
+	    .domain(otherDomain)
+	    .range(d3.schemeRdPu[7]);
 
 
 	
-	
+	//mouse over function
+	//other counties will be more opaque
+	//and this county will be less opaque
 	let mouseOver = function(d) {
             d3.selectAll(".county")
                 .transition()
@@ -105,17 +146,17 @@
 	    
 	      
             
-            tooltipLabel.text(d.properties.name + " " + d.properties.lsad + ": " + d.covidCount +  " cases"); 
+            tooltipLabel.text(d.properties.name + " " + d.properties.lsad + ": " + d.cases +  " cases"); 
             
             
             tooltip.style('display', 'block');
 	    
 	    	 
 	    console.log(tooltip);
-	    console.log(d.properties.name, d.properties.lsad, d.covidCount, "cases");
+	    console.log(d.properties.name, d.properties.lsad, d.cases, "cases");
         };					
         
-	
+		
         let mouseLeave = function(d) {
             d3.selectAll(".county")
                 .transition()
@@ -148,33 +189,33 @@
 	    .attr("id", "state_fips")
 	    .data(topojson.feature(data[0], data[0].objects.collection).features.filter(
 		function(d) {
-		    return d.properties.state_fips == 24; }))
+		    return d.properties.state_fips == d.properties.state_fips ; }))
 	    .enter()
 	    .append("path")
 	    .attr("d", path)
 	    .attr("stroke","white")
 	    .attr("fill",
 		  function(d) {
-		      var name = d.properties.name.toLowerCase();
-		      var areaType = d.properties.lsad.toLowerCase();
+		      //var name = d.properties.name.toLowerCase();
+		      //var areaType = d.properties.lsad.toLowerCase();
 		      
-		      //special cases for baltimore county and baltimore city, and st marys
-		      if(name === "baltimore" && areaType === "county"){
-			  d.covidCount = covidData.get("baltimore");
+		      //console.log(d['properties']['fips'])
+		      //console.log(covidData)
+		      //console.log(covidData.get(d['properties']['fips']))
+		      //console.log(covidData.get(Number(d['properties']['fips'])))
+		      if (covidData.get(d['properties']['fips'])){
+			  d.cases = covidData.get(d['properties']['fips'])[0]
+			  d.deaths = covidData.get(d['properties']['fips'])[1]
 		      }
-		      else if(name === "baltimore" && areaType === "city"){
-			  d.covidCount = covidData.get("baltimore city");
-		      }
-		      
-		      if(name === "st. mary's"){
-			  d.covidCount = covidData.get("st mary's");
-		      }
-		      
 		      else{
-			  d.covidCount = covidData.get(name);
-		      }
-	//	      console.log(d);
-		      return colorScale(d.covidCount);
+			  d.cases = 0
+			  d.deaths = 0
+		      }			 
+		      //console.log(d)
+		      
+		      return colorScale(d.cases);
+		      
+		
 		  })
 	    .on("mouseover", mouseOver )
 	    .on("mouseleave", mouseLeave )
@@ -186,7 +227,7 @@
 	
 	
 
-	
+	//legend
 	svg.append("g")
 	    .attr("class", "legendQuant")
 	    .attr("transform", "translate(20,20)");

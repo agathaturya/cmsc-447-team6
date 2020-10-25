@@ -12,8 +12,108 @@ app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 mongo_covid = PyMongo(app, uri="mongodb://localhost:27017/md_covid_data")
 mongo_prison = PyMongo(app, uri="mongodb://localhost:27017/prison_data")
-
+mongo_us_covid = PyMongo(app, uri="mongodb://localhost:27017/us_counties_covid_data")
+mongo_prison_covid =  PyMongo(app, uri="mongodb://localhost:27017/prison_covid_data")
 cors = CORS(app)
+
+#get prison covid data by date
+#date needs to be formatted like this:YYYY-MM-DD   
+@app.route('/get_prison_covid_data_by_date/<date>/', methods=['GET'])
+def get_prison_covid_data_by_date(date):
+  result = []
+  doc = mongo_prison_covid.db.prison_covid_data
+
+  for i in doc.find({'date':date}):
+    print(i)
+    result.append(i)
+
+  return json.dumps(result, default=str)
+#post covid prison data
+@app.route('/prison_covid_data.json', methods=['POST'])
+def post_prison_covid_data():
+  data = json.loads(request.get_json())
+  data = data["data"]
+  doc = mongo_prison_covid.db.prison_covid_data
+  count = 0
+
+  for i in data:
+    print(i)
+    date  = i['date'] 
+    facility_type = i['facility_type']
+    state = i['state']
+    canonical_facility_name = i['canonical_facility_name']
+    pop_tested = i['pop_tested']
+    pop_tested_positive = i['pop_tested_positive'] 
+    pop_tested_negative = i['pop_tested_negative']
+    pop_deaths = i['pop_deaths']
+    pop_recovered = i['pop_recovered']
+    staff_tested = i['staff_tested']
+    staff_tested_positive = i['staff_tested_positive']
+    staff_tested_negative = i['staff_tested_negative']
+    staff_deaths = i['staff_deaths']
+    staff_recovered = i['staff_recovered']
+    source = i['source']
+    compilation = i['compilation']
+    notes = i['notes']
+
+    doc.insert({"date":date,\
+                 "facility_type":facility_type,\
+                 "state":state,\
+                 "canonical_facility_name":canonical_facility_name,\
+                 "pop_tested":pop_tested,\
+                 "pop_tested_positive":pop_tested_positive,\
+                 "pop_tested_negative":pop_tested_negative,\
+                 "pop_deaths":pop_deaths,\
+                 "pop_recovered":pop_recovered,\
+                 "staff_tested":staff_tested,\
+                 "staff_tested_positive":staff_tested_positive,\
+                 "staff_tested_negative":staff_tested_negative,\
+                 "staff_deaths":staff_deaths,\
+                 "staff_recovered":staff_recovered,\
+                 "source":source,\
+                 "compilation":compilation,\
+                 "notes":notes})
+    count += 1
+  print(count)
+  return jsonify({'num_entries': count});
+
+#post national covid data
+@app.route('/us_counties_covid_data.json', methods=['POST'])
+def post_national_covid_data():
+  data = json.loads(request.get_json())
+  data = data["data"]
+  doc = mongo_us_covid.db.us_counties_covid_data
+  count = 0
+  for i in data:
+    print(i)
+    #input()
+
+    
+    date = i['date']
+    county = i['county']
+    state = i['state']
+    fips = i['fips']
+    cases = int(i['cases'])
+    deaths = int(i['deaths'])
+    x = doc.insert( {"date": date, \
+                 "county":county, "state":state, \
+                 "fips":fips, "cases":cases, \
+                 "deaths":deaths})
+    count += 1
+  print(count)
+  return jsonify({'num_entries': count});
+
+
+#get by date
+#date needs to be formatted like this:YYYY-MM-DD
+@app.route('/get_us_data_by_date/<date>/', methods=['GET'])
+def get_us_counties_covid_data_by_date(date):
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({'date':date}):
+    print(i)
+    result.append(i)
+  return json.dumps(result, default=str)
 
 
 #get by obj_id

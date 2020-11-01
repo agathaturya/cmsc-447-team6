@@ -21,8 +21,8 @@ create the virtual env in the `proj` directory. **create the virtual env before 
 - install it by running the command ```npm install -g browserify```
 ### [postman](https://www.postman.com/downloads/)  
 - postman can be used to test API
-### react-calender
-- install it by running the command ```npm install react-calendar```  
+### flatpickr
+- install it by running the command ```npm i flatpickr```  
 
 ### How to run it
 0. Install all the tools needed

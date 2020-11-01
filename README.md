@@ -22,7 +22,7 @@ create the virtual env in the `proj` directory. **create the virtual env before 
 ### [postman](https://www.postman.com/downloads/)  
 - postman can be used to test API
 ### react-calender
-- install it by running the command ```npm install react-calender```
+- install it by running the command ```npm install react-calendar```
 ### express
 install it by running the command ```npm install --save express```
 

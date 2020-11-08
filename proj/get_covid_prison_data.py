@@ -12,8 +12,9 @@ if __name__ == "__main__":
     csv_file.close()
     data_list = []
     for row in file_contents:
-
+        
         row = row.split(",")
+                
         for i in range(len(row)):
             if row[i] == "" and i in [4,5,6,7,8,9,10,11,12,13]:
                 row[i] = 0
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         compilation = row[15]
         notes = row[16]
         
-
+        
 
         
         
@@ -59,11 +60,13 @@ if __name__ == "__main__":
         
         data_list.append(entry)
     print(len(data_list))
+    #taking header out
+    data_list = data_list[1:]
     formatted_json_data = {"data":data_list}
     formatted_json_data = json.dumps(formatted_json_data)
     
     l = requests.post("http://127.0.0.1:5000/prison_covid_data.json", \
-                    headers={"content-type":"application/json"}, \
+                   headers={"content-type":"application/json"}, \
                     json=formatted_json_data)
     
     

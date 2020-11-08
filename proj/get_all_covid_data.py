@@ -35,11 +35,11 @@ if __name__ == "__main__":
         #input()
     formatted_json_data = {"data":data_list}
     print(formatted_json_data)
-    input()
+    #input()
     
     formatted_json_data = json.dumps(formatted_json_data)
     print(formatted_json_data)
-    input()
+    #input()
 
     
     l = requests.post("http://127.0.0.1:5000/us_counties_covid_data.json", \

@@ -8,6 +8,8 @@ from flask import request
 from flask_pymongo import PyMongo
 from flask_cors import CORS, cross_origin
 import json
+import datetime
+
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 mongo_covid = PyMongo(app, uri="mongodb://localhost:27017/md_covid_data")
@@ -22,12 +24,13 @@ cors = CORS(app)
 def get_prison_covid_data_by_date(date):
   result = []
   doc = mongo_prison_covid.db.prison_covid_data
-
-  for i in doc.find({'date':date}):
+  d = datetime.datetime.strptime(date, "%Y-%m-%d")
+  for i in doc.find({'date':d}):
     print(i)
     result.append(i)
 
   return json.dumps(result, default=str)
+
 #post covid prison data
 @app.route('/prison_covid_data.json', methods=['POST'])
 def post_prison_covid_data():
@@ -37,8 +40,9 @@ def post_prison_covid_data():
   count = 0
 
   for i in data:
-    print(i)
-    date  = i['date'] 
+    date  = i['date']
+    d = datetime.datetime.strptime(date, "%Y-%m-%d")
+    
     facility_type = i['facility_type']
     state = i['state']
     canonical_facility_name = i['canonical_facility_name']
@@ -56,7 +60,7 @@ def post_prison_covid_data():
     compilation = i['compilation']
     notes = i['notes']
 
-    doc.insert({"date":date,\
+    doc.insert({"date":d,\
                  "facility_type":facility_type,\
                  "state":state,\
                  "canonical_facility_name":canonical_facility_name,\
@@ -86,16 +90,17 @@ def post_national_covid_data():
   count = 0
   for i in data:
     print(i)
-    #input()
-
-    
+        
     date = i['date']
+    date = date.strip()
+    d = datetime.datetime.strptime(date, "%Y-%m-%d")
+    
     county = i['county']
     state = i['state']
     fips = i['fips']
     cases = int(i['cases'])
     deaths = int(i['deaths'])
-    x = doc.insert( {"date": date, \
+    x = doc.insert( {"date": d, \
                  "county":county, "state":state, \
                  "fips":fips, "cases":cases, \
                  "deaths":deaths})
@@ -104,34 +109,22 @@ def post_national_covid_data():
   return jsonify({'num_entries': count});
 
 
-#get by date
-#date needs to be formatted like this:YYYY-MM-DD
+#get national covid data by date
+#date param needs to be formatted like this:YYYY-MM-DD
 @app.route('/get_us_data_by_date/<date>/', methods=['GET'])
 def get_us_counties_covid_data_by_date(date):
   result = []
   doc = mongo_us_covid.db.us_counties_covid_data
-  for i in doc.find({'date':date}):
+  d = datetime.datetime.strptime(date, "%Y-%m-%d")
+  for i in doc.find({'date':d}):
     print(i)
+    print()
+    print()
     result.append(i)
   return json.dumps(result, default=str)
 
 
-#get by obj_id
-@app.route('/get_by_id/<obj_id>', methods=['GET'])
-def get_by_obj_id(obj_id):
-
-  obj_id = int(obj_id)
-  covid_data = mongo_covid.db.md_covid_data
-  result = covid_data.find_one({'obj_id' : obj_id})
-  print(result)
-
-  if result:
-    output = result
-  else:
-    output = "No document found"
-  
-  return json.dumps(output, default=str)
-
+'''
 @app.route('/md_covid_data.json', methods=['POST'])
 def add_data():
   #each feature contains (new?) covid case counts for a single day, from each county
@@ -205,7 +198,7 @@ def add_data():
     count += 1
     
   return jsonify({'num_entries': count});
-
+'''
 @app.route('/prison_data.json', methods=['POST'])
 def post_prison_data():
     

@@ -71,4 +71,8 @@ This is what the terminal output should look like when the flask server is runni
 {'_id': ObjectId('5f95cbf32bae17dd2e25d36f'), 'date': '2020-06-20', 'county': 'Coffee', 'state': 'Alabama', 'fips': '01031', 'cases': '315', 'deaths': '1'}
 {'_id': ObjectId('5f95cbf32bae17dd2e25d370'), 'date': '2020-06-20', 'county': 'Colbert', 'state': 'Alabama', 'fips': '01033', 'cases': '302', 'deaths': '5'}
 {'_id': ObjectId('5f95cbf32bae17dd2e25d371'), 'date': '2020-06-20', 'county': 'Conecuh', 'state': 'Alabama', 'fips': '01035', 'cases
+...
+
+
+127.0.0.1 - - [08/Nov/2020 13:06:49] "GET /get_us_data_by_date/2020-06-20/ HTTP/1.1" 200 -
 ```

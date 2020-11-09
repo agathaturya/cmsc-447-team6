@@ -123,6 +123,122 @@ def get_us_counties_covid_data_by_date(date):
     result.append(i)
   return json.dumps(result, default=str)
 
+#VVV----------Filters added by Leon----------VVV
+
+#get data filted by county
+#county param needs to be formatted like this: 'Baldwin'
+@app.route('/get_us_data_by_county/<county>/', methods=['GET'])
+def get_us_counties_covid_data_by_county(county):
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({'county':str(county)}):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data filted by state
+#state param needs to be formatted like this: 'Maryland'
+@app.route('/get_us_data_by_state/<state>/', methods=['GET'])
+def get_us_counties_covid_data_by_state(state):
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({'state':str(state)}):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data filted by fips
+#fips param needs to be formatted like this: '01001'
+@app.route('/get_us_data_by_fips/<fips>/', methods=['GET'])
+def get_us_counties_covid_data_by_fips(fips):
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({'fips':str(fips)}):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data sorted by specific number of cases
+#cases param needs to be formatted like this: 140
+@app.route('/get_us_data_by_cases/<cases>/', methods=['GET'])
+def get_us_counties_covid_data_by_cases(cases):
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({'cases':int(cases)}):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data sorted by decending cases (most to least)
+@app.route('/get_us_data_by_cases_D/<cases>/', methods=['GET'])
+def get_us_counties_covid_data_by_cases_D():
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({ }.sort({'cases':-1})):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data sorted by accending cases (least to most)
+@app.route('/get_us_data_by_cases_A/<cases>/', methods=['GET'])
+def get_us_counties_covid_data_by_cases_A():
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({ }.sort({'cases':1})):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data sorted by specific number of deaths
+#deaths param needs to be formatted like this: 20
+@app.route('/get_us_data_by_deaths/<deaths>/', methods=['GET'])
+def get_us_counties_covid_data_by_deaths(deaths):
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({'deaths':int(deaths)}):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data sorted by decending deaths (most to least)
+@app.route('/get_us_data_by_deaths_D/<deaths>/', methods=['GET'])
+def get_us_counties_covid_data_by_deaths_D():
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({ }.sort({'deaths':-1})):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#get data sorted by accending deaths (least to most)
+@app.route('/get_us_data_by_deaths_A/<deaths>/', methods=['GET'])
+def get_us_counties_covid_data_by_deaths_A():
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find({ }.sort({'deaths':1})):
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+#^^^---------------------------^^^
 
 '''
 @app.route('/md_covid_data.json', methods=['POST'])

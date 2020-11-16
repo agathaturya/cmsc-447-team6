@@ -3,19 +3,24 @@ var width = 960,//700*2,//960,
 	centered;
     var legendWidth = 40;
     var legendHeight = 100;
-    var projection = d3.geoAlbers()
+//this projection works best with a us map    
+var projection = d3.geoAlbers()
 	.scale( 1000 );
 //	.rotate( [76.6413,0] )
 //	.center( [0, 39.0458] )
 //	.translate( [width/2,height/2] );
     var path = d3.geoPath()
 	.projection(projection);
+
+	
     var minCases, maxCases, minDeaths, maxDeaths;
-    var covidData = d3.map();
+   //used to map fips to covid counts	    
+   var covidData = d3.map();
     var svg = d3.select("body").append("svg")
 	.attr("width", width)
 	.attr("height", height);
     var group = svg.append('g')
+    //endpoints w/ data we need
     var files = ["http://localhost:5000/get_us_data_by_date/2020-06-20/", "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-states/us-albers-counties.json"];
     var promises = [
 	d3.json(files[1]),
@@ -23,7 +28,7 @@ var width = 960,//700*2,//960,
         
 	})
     ];
-    var colorScale;
+    var colorScale; //used for map colors
     var sumCases = 0;
     var sumDeaths = 0;
     var avgCases, avgDeaths;
@@ -55,7 +60,8 @@ var width = 960,//700*2,//960,
 	    sumCases += i['cases']
 	    sumDeaths += i['deaths']
 	    count++;
-	    
+		
+	    //mapping fips to [cases, deaths]
 	    covidData.set(i['fips'], [i['cases'], i['deaths']]);
 	    if(i['cases'] < minCases)
 		minCases = i['cases']
@@ -67,7 +73,6 @@ var width = 960,//700*2,//960,
                 minDeaths = i['deaths']
             if(i['deaths'] > maxDeaths)
                 maxDeaths = i['deaths']
-	    
 	    
 	}
 	
@@ -85,7 +90,7 @@ var width = 960,//700*2,//960,
 	//color #4 is max. cases + avg cases
 	//color #5 is max. cases
 	var domain = [minCases, minCases+avgCases, Math.round((minCases+avgCases)/2), avgCases, Math.round((maxCases+avgCases)/2), maxCases];
-	var otherDomain = [0,10,100,1000,10000,100000,1000000]
+	var otherDomain = [0,10,100,1000,10000,100000,1000000];//this domain works better for the color scale of the map
 	domain = domain.sort(function(a, b){return a-b})
 	console.log(domain)
 
@@ -140,10 +145,12 @@ var width = 960,//700*2,//960,
 	//var tooltip = svgContainer
          //   .append('div')
            // .attr('class', 'tooltip');
+	
 	var tooltip = d3.select("body")
 	    .append("div")
 	    .attr("class", "tooltip");
-    var tooltipLabel =   tooltip.append('div')
+	    
+    	var tooltipLabel =   tooltip.append('div')
              .attr('class', 'label');
 
 	var mousemove = function(d) {
@@ -154,6 +161,7 @@ var width = 960,//700*2,//960,
 	    .attr("id", "state_fips")
 	    .data(topojson.feature(data[0], data[0].objects.collection).features.filter(
 		function(d) {
+			//want to display all states
 		    return d.properties.state_fips == d.properties.state_fips ; }))
 	    .enter()
 	    .append("path")
@@ -166,6 +174,7 @@ var width = 960,//700*2,//960,
 			  d.cases = covidData.get(d['properties']['fips'])[0]
 			  d.deaths = covidData.get(d['properties']['fips'])[1]
 		      }
+		     //some counties have no reported cases
 		      else{
 			  d.cases = 0
 			  d.deaths = 0
@@ -193,7 +202,7 @@ var width = 960,//700*2,//960,
 	var legend = d3.legendColor()
 	    .labelFormat(d3.format(".0f"))
 	    .labels(d3.legendHelpers.thresholdLabels)
-	    .scale(colorScale);
+	    .scale(colorScale);//legend uses same colorscale as the map
 
 	svg.select(".legendQuant")
 	    .call(legend);  

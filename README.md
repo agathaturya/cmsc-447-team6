@@ -17,12 +17,19 @@ create the virtual env in the `proj` directory. **create the virtual env before 
  - install it by running the command ```npm install xmlhttprequest```
 ### d3-svg-legend
 - install it by running the command ```npm i d3-svg-legend -S```
-### browserify
-- install it by running the command ```npm install -g browserify```
-### [postman](https://www.postman.com/downloads/)  
-- postman can be used to test API
+### react
+- install it by running the command ```npm install react```
 ### react-calender
 - install it by running the command ```npm install react-calendar```
+### topo-json
+- install it by running the command ```npm install topojson```
+### d3-collection
+- install it by running the command ```npm install d3-collection```
+
+
+### [postman](https://www.postman.com/downloads/)  
+- postman can be used to test API
+
 
 
 ### How to run it
@@ -37,11 +44,9 @@ create the virtual env in the `proj` directory. **create the virtual env before 
 4. Navigate to the `proj` directory, and run the command `python3 rest_api.py`. This starts the flask server. **The python virtual environment must be active for the server to run.**
 5. While the flask server is running, open another terminal window, navigate to the `proj` directory, and run the command `python3 get_all_covid_data.py`. This GETs data from the NYT Covid dataset, and POSTs it to a locol mongo db.
 6. While the flask server is running, run the ```get_prison_data.py``` and ```get_covid_prison_data.py``` files by running the command ```python3 get_prison_data.py```, and ```python3 get_covid_prison_data.py```. This GETs the prison data webpage, gets rid of HTML tags, reads covid prison data from ```data/Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv``` and POSTs them to a local mongo db.
-7. In a separate terminal window, run the ```server.js``` file by running the command ```node server.js```. This runs a local server on port 8000 to host the files in proj. 
-8. In **Chrome**, open the `index.html` file from the `proj` directory.
+7. In a separate terminal, run the command ```npm start```. This starts a local that runs on port 3000. In Chrome, ```index.html``` should open at URL ```localhost:3000```. If it doesn't open automatically, in Chrome go to the URL `localhost:30000`.
 Steps 0, 1, 2, and 5 only have to be done once.  
-This is what the terminal output should look like when the flask server is running, and the `index.html` file is open:  
-
+This is what the terminal output should look like when the flask server is running, and the `localhost:3000` URL is open:  
 ```
 (venv) ~/cmsc-447-team6/proj agatha: python3 rest_api.py 
  * Serving Flask app "rest_api" (lazy loading)

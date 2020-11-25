@@ -73,7 +73,7 @@ function CovidMap({ mapData, covidData, width, height }) {
 
          }
          //no entry for this county
-         //todo: maybe specify that if this region is empty, we have no data
+         //TODO: specify somewhere that this region is empty --> no data
          catch(e){
             console.log(d)
             console.error(e)

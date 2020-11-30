@@ -12,9 +12,9 @@ create the virtual env in the `proj` directory. **create the virtual env before 
 - install it by running the command ```pip install requests```
 ### [node](https://www.npmjs.com/get-npm) 
 ### d3
-- install it by running the command ```npm install d3```
+- install it by running the command ```npm install -g d3```
 ### XMLHttpRequest  
- - install it by running the command ```npm install xmlhttprequest```
+ - install it by running the command ```npm install -g xmlhttprequest```
 ### d3-svg-legend
 - install it by running the command ```npm i -g d3-svg-legend -S```
 ### react

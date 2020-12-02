@@ -98,8 +98,16 @@ def post_national_covid_data():
     county = i['county']
     state = i['state']
     fips = i['fips']
-    cases = int(i['cases'])
-    deaths = int(i['deaths'])
+    cases = i['cases']
+    if cases == '':
+        cases = 0
+    else:
+        cases = int(cases)
+    deaths = i['deaths']
+    if deaths == '':
+        deaths = 0
+    else:
+        deaths = int(deaths)
     x = doc.insert( {"date": d, \
                  "county":county, "state":state, \
                  "fips":fips, "cases":cases, \

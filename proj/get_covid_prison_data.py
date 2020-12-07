@@ -7,7 +7,7 @@ import findFips as ff
 
 
 if __name__ == "__main__":
-    csv_file = open("../data/Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv", "r")
+    csv_file = open("../data/Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv", "r",encoding="utf8")
 
     file_contents = csv_file.readlines()
     csv_file.close()

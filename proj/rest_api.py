@@ -24,11 +24,14 @@ cors = CORS(app)
 def get_prison_covid_data_by_date(date):
   result = []
   doc = mongo_prison_covid.db.prison_covid_data
-  d = datetime.datetime.strptime(date, "%Y-%m-%d")
-  for i in doc.find({'date':d}):
-    print(i)
-    result.append(i)
-
+  try:
+    d = datetime.datetime.strptime(date, "%Y-%m-%d")
+    for i in doc.find({'date':d}):
+      print(i)
+      result.append(i)
+  #invalid date
+  except ValueError:
+    return jsonify({'num_entries': 0});
   return json.dumps(result, default=str)
 
 #post covid prison data
@@ -98,8 +101,16 @@ def post_national_covid_data():
     county = i['county']
     state = i['state']
     fips = i['fips']
-    cases = int(i['cases'])
-    deaths = int(i['deaths'])
+    cases = i['cases']
+    if cases == '':
+        cases = 0
+    else:
+        cases = int(cases)
+    deaths = i['deaths']
+    if deaths == '':
+        deaths = 0
+    else:
+        deaths = int(deaths)
     x = doc.insert( {"date": d, \
                  "county":county, "state":state, \
                  "fips":fips, "cases":cases, \
@@ -115,12 +126,16 @@ def post_national_covid_data():
 def get_us_counties_covid_data_by_date(date):
   result = []
   doc = mongo_us_covid.db.us_counties_covid_data
-  d = datetime.datetime.strptime(date, "%Y-%m-%d")
-  for i in doc.find({'date':d}):
-    print(i)
-    print()
-    print()
-    result.append(i)
+  try:
+    d = datetime.datetime.strptime(date, "%Y-%m-%d")
+    for i in doc.find({'date':d}):
+      print(i)
+      print()
+      print()
+      result.append(i)
+    #invalid date
+  except ValueError:
+    return jsonify({'num_entries': 0});
   return json.dumps(result, default=str)
 
 #VVV----------Filters added by Leon----------VVV
@@ -170,6 +185,9 @@ def get_us_counties_covid_data_by_fips(fips):
 def get_us_counties_covid_data_by_cases(cases):
   result = []
   doc = mongo_us_covid.db.us_counties_covid_data
+  if not cases.isnumeric():
+    return jsonify({'num_entries': 0});
+  
   for i in doc.find({'cases':int(cases)}):
     print(i)
     print()
@@ -182,6 +200,10 @@ def get_us_counties_covid_data_by_cases(cases):
 def get_us_counties_covid_data_by_cases_D():
   result = []
   doc = mongo_us_covid.db.us_counties_covid_data
+
+  if not cases.isnumeric():
+    return jsonify({'num_entries': 0});
+
   for i in doc.find({ }.sort({'cases':-1})):
     print(i)
     print()
@@ -207,6 +229,9 @@ def get_us_counties_covid_data_by_cases_A():
 def get_us_counties_covid_data_by_deaths(deaths):
   result = []
   doc = mongo_us_covid.db.us_counties_covid_data
+  if not deaths.isnumeric():
+    return jsonify({'num_entries': 0});
+
   for i in doc.find({'deaths':int(deaths)}):
     print(i)
     print()
@@ -219,6 +244,9 @@ def get_us_counties_covid_data_by_deaths(deaths):
 def get_us_counties_covid_data_by_deaths_D():
   result = []
   doc = mongo_us_covid.db.us_counties_covid_data
+  if not deaths.isnumeric():
+    return jsonify({'num_entries': 0});
+
   for i in doc.find({ }.sort({'deaths':-1})):
     print(i)
     print()
@@ -231,6 +259,10 @@ def get_us_counties_covid_data_by_deaths_D():
 def get_us_counties_covid_data_by_deaths_A():
   result = []
   doc = mongo_us_covid.db.us_counties_covid_data
+
+  if not deaths.isnumeric():
+    return jsonify({'num_entries': 0});
+
   for i in doc.find({ }.sort({'deaths':1})):
     print(i)
     print()

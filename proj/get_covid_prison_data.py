@@ -3,6 +3,7 @@
 
 import requests
 import json
+import findFips as ff
 
 
 if __name__ == "__main__":
@@ -11,10 +12,18 @@ if __name__ == "__main__":
     file_contents = csv_file.readlines()
     csv_file.close()
     data_list = []
+
+    #-----------------------------------------------------------------------------
+    #create dictionary and retrieve JSON prison data
+    countyStateFips = ff.createFipsDict()
+    prisonJsonSource = requests.get('http://127.0.0.1:5000/prison_data.json')
+    prisonJson = prisonJsonSource.read()
+    prisonData = json.loads(prisonJson)
+    #-----------------------------------------------------------------------------
+
     for row in file_contents:
-        
+
         row = row.split(",")
-                
         for i in range(len(row)):
             if row[i] == "" and i in [4,5,6,7,8,9,10,11,12,13]:
                 row[i] = 0
@@ -36,9 +45,16 @@ if __name__ == "__main__":
         compilation = row[15]
         notes = row[16]
         
-        
-
-        
+        #-----------------------------------------------------------------------------
+        #search the json data using facility name and state to find county
+        #then using the dictionary with county and state to assign fips 
+        for each in prisonData["data"]:
+            #each = json.loads(each)
+            if each["facility_name"] == canonical_facility_name and each["name"] == state:
+                county = each["county"]
+                fips = countyStateFips[(county, state)]
+                break
+        #-----------------------------------------------------------------------------
         
         entry = {"date":date,\
                  "facility_type":facility_type,\
@@ -56,17 +72,17 @@ if __name__ == "__main__":
                  "staff_recovered":staff_recovered,\
                  "source":source,\
                  "compilation":compilation,\
-                 "notes":notes}
+                 "notes":notes, \
+                 "fips":fips}
+
         
         data_list.append(entry)
     print(len(data_list))
-    #taking header out
-    data_list = data_list[1:]
     formatted_json_data = {"data":data_list}
     formatted_json_data = json.dumps(formatted_json_data)
     
     l = requests.post("http://127.0.0.1:5000/prison_covid_data.json", \
-                   headers={"content-type":"application/json"}, \
+                    headers={"content-type":"application/json"}, \
                     json=formatted_json_data)
     
     

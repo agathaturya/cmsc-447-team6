@@ -4,13 +4,22 @@
 import requests
 import json
 import findFips as ff
-
-
+import os
+import os.path
+import shutil
 if __name__ == "__main__":
-    csv_file = open("../data/Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv", "r",encoding="utf8")
 
+
+
+    d = os.getcwd()
+    os.chdir("..")
+    os.chdir("data")
+    d = os.getcwd()
+    csv_file = open("Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv", "r",encoding="utf8")
+    
     file_contents = csv_file.readlines()
     csv_file.close()
+
     data_list = []
 
     #-----------------------------------------------------------------------------

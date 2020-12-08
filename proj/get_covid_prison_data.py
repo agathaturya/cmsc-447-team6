@@ -15,8 +15,11 @@ if __name__ == "__main__":
     os.chdir("..")
     os.chdir("data")
     d = os.getcwd()
-    csv_file = open("Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv", "r",encoding="utf8")
     
+    #use this line with macOS/linux
+    csv_file = open("Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv", "r")
+    #use this line with windows
+    #csv_file = open("Covid_Cases_and_Deaths_in_Criminal_Justice_Facilities_merged_data_prisons.csv", "r",encoding="utf8")
     file_contents = csv_file.readlines()
     csv_file.close()
 

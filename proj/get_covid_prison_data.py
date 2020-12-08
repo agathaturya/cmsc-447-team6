@@ -33,7 +33,8 @@ if __name__ == "__main__":
     prisonData = json.loads(prisonJson)
     #-----------------------------------------------------------------------------
     '''
-
+    #ignore header
+    csv_file = csv_file[1:0]
     for row in file_contents:
 
         row = row.split(",")

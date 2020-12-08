@@ -34,7 +34,7 @@ if __name__ == "__main__":
     #-----------------------------------------------------------------------------
     '''
     #ignore header
-    file_contents = file_contents[1:0]
+    file_contents = file_contents[1:]
     for row in file_contents:
 
         row = row.split(",")

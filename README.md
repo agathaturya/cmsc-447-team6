@@ -1,6 +1,6 @@
 # README
 ## Tools to install
-### [mongo](https://www.mongodb.com/try/download/community), [installation instructions](https://docs.mongodb.com/guides/server/install/)
+### [mongo](https://www.mongodb.com/try/download/community), installation instructions [here](https://docs.mongodb.com/guides/server/install/)
 ### [pip](https://pip.pypa.io/en/stable/installing/)  
 ### pymongo
 - install it by running the command ```pip install pymongo``` or ```pip install Flask-PyMongo```   

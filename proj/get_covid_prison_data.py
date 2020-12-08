@@ -34,7 +34,7 @@ if __name__ == "__main__":
     #-----------------------------------------------------------------------------
     '''
     #ignore header
-    csv_file = csv_file[1:0]
+    file_contents = file_contents[1:0]
     for row in file_contents:
 
         row = row.split(",")

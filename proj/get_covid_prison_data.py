@@ -24,7 +24,7 @@ if __name__ == "__main__":
     csv_file.close()
 
     data_list = []
-
+    '''
     #-----------------------------------------------------------------------------
     #create dictionary and retrieve JSON prison data
     countyStateFips = ff.createFipsDict()
@@ -32,6 +32,7 @@ if __name__ == "__main__":
     prisonJson = prisonJsonSource.read()
     prisonData = json.loads(prisonJson)
     #-----------------------------------------------------------------------------
+    '''
 
     for row in file_contents:
 
@@ -56,7 +57,7 @@ if __name__ == "__main__":
         source = row[14]
         compilation = row[15]
         notes = row[16]
-        
+        '''
         #-----------------------------------------------------------------------------
         #search the json data using facility name and state to find county
         #then using the dictionary with county and state to assign fips 
@@ -67,7 +68,7 @@ if __name__ == "__main__":
                 fips = countyStateFips[(county, state)]
                 break
         #-----------------------------------------------------------------------------
-        
+        '''
         entry = {"date":date,\
                  "facility_type":facility_type,\
                  "state":state,\
@@ -84,8 +85,10 @@ if __name__ == "__main__":
                  "staff_recovered":staff_recovered,\
                  "source":source,\
                  "compilation":compilation,\
-                 "notes":notes, \
-                 "fips":fips}
+                 "notes":notes}
+                 
+#                  , \
+#                  "fips":fips}
 
         
         data_list.append(entry)

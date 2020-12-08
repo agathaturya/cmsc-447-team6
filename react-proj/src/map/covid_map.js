@@ -44,7 +44,6 @@ function CovidMap({ mapData, covidData, width, height }) {
 
   var tooltip = d3Tip()
     .attr("class", "d3-tip")
-
     .html(function (event, d) {
       //this is shown on the tooltip
       var str = "";
@@ -123,17 +122,38 @@ function CovidMap({ mapData, covidData, width, height }) {
       var fips = covidData[x]["fips"];
       fips = i["fips"].toString();
 
+
+      //theres a mismatch between certain county names
+      //The NYT dataset puts the data for all NYC boroughs as 1 entry (New York City)
+      //Shannon County, SD is listed as Oglala Lakota County in the NYT Dataset
+      //Bedford City VA is independent from Bedford County VA and the NYT dataset doesn't reflect this
+      //Wade Hampton Census Area, AK is listed as Kusilvak Census Area, AK in the NYT dataset
       if (i["county"] == "New York City") {
         covidDataDict.set("New York City", [i["cases"], i["deaths"]]);
         
         
-      } else {
+      } 
+   
+      //Bedford County/City
+      else if(i['fips'] == '51019'){
+         covidDataDict.set('51019', [i["cases"], i["deaths"]]);//fips of bedford county
+         covidDataDict.set("51515", [i["cases"], i["deaths"]]);//fips of bedford city
+      }
+
+      else if(i['county'] == 'Oglala Lakota' && i['state'] == 'South Dakota'){
+        covidDataDict.set("46113",[i["cases"], i["deaths"]] )//fips of shannon county
+      }
+      else if(i['county'] == 'Kusilvak Census Area' && i['state'] == 'Alaska'){
+        covidDataDict.set("02270", [i["cases"], i["deaths"]])
+      }
+      else {
         covidDataDict.set(fips, [i["cases"], i["deaths"]]);
       }
     }
 
     svg = d3.select(ref.current);
 
+    //zoom callback
     const zoom = d3
       .zoom()
       .scaleExtent([1, 8])
@@ -161,6 +181,8 @@ function CovidMap({ mapData, covidData, width, height }) {
           d.cases = covidDataDict.get(fips)[0];
           d.deaths = covidDataDict.get(fips)[1];
         } catch (error) {
+          //The map lists the boroughs of NYC seperatly, but the
+          //NYT covid dataset lists it as 1 entry (NYC)
           if (
             d.properties.state == "New York" &&
             (d.properties.name == "New York" ||
@@ -172,6 +194,8 @@ function CovidMap({ mapData, covidData, width, height }) {
             d.cases = covidDataDict.get("New York City")[0];
             d.deaths = covidDataDict.get("New York City")[1];
           } else {
+            //No data for this county
+            console.log(d)
             return "#666464";
           }
         }
@@ -187,6 +211,10 @@ function CovidMap({ mapData, covidData, width, height }) {
       .on("click", clicked)
       .call(tooltip);
 
+
+
+
+    //legend
     svg
       .append("g")
       .attr("class", "legendQuant")
@@ -195,7 +223,6 @@ function CovidMap({ mapData, covidData, width, height }) {
     legend = d3_legend
       .legendColor()
       .labelFormat(d3.format(",.0f"))
-      //.labels(d3_legend.legendHelpers.thresholdLabels)
       .labels(function ({ i, genLength, generatedLabels, labelDelimiter }) {
         if (i === 0) {
           const values = generatedLabels[i].split(` ${labelDelimiter} `);
@@ -206,13 +233,18 @@ function CovidMap({ mapData, covidData, width, height }) {
         }
         return generatedLabels[i] + ` cases`;
       })
-      .title("Covid-19 Cases")
+      .title("COVID-19 Cases")
       .scale(casesColorScale); //legend uses same colorscale as the map
 
     svg.select(".legendQuant").call(legend);
 
     svg.call(zoom);
 
+
+
+
+
+    //callback for when map is clicked
     function clicked(d) {
       //toggle death counts
       if (showingCases) {
@@ -245,7 +277,6 @@ function CovidMap({ mapData, covidData, width, height }) {
             }
 
             catch(error){
-              console.log("HEY")
               console.log(e)
             }
             }
@@ -272,7 +303,7 @@ function CovidMap({ mapData, covidData, width, height }) {
             return generatedLabels[i] + ` deaths`;
           })
 
-          .title("Covid-19 Deaths")
+          .title("COVID-19 Deaths")
           .scale(deathsColorScale); //legend uses same colorscale as the map
 
         svg.select(".legendQuant").call(legend);
@@ -286,7 +317,6 @@ function CovidMap({ mapData, covidData, width, height }) {
           .style("opacity", 0.9)
           .attr("fill", function (e) {
             try {
-             // console.log(e);
               e.cases = covidDataDict.get(e.properties.fips)[0];
               e.deaths = covidDataDict.get(e.properties.fips)[1];
             } catch (error) {
@@ -324,7 +354,7 @@ function CovidMap({ mapData, covidData, width, height }) {
             }
             return generatedLabels[i] + ` cases`;
           })
-          .title("Covid-19 Cases")
+          .title("COVID-19 Cases")
           .scale(casesColorScale); //legend uses same colorscale as the map
 
         svg.select(".legendQuant").call(legend);

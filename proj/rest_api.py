@@ -59,6 +59,8 @@ def post_prison_covid_data():
     source = i['source']
     compilation = i['compilation']
     notes = i['notes']
+    county = i['county']
+    fips = i['fips']
 
     doc.insert({"date":d,\
                  "facility_type":facility_type,\
@@ -76,7 +78,10 @@ def post_prison_covid_data():
                  "staff_recovered":staff_recovered,\
                  "source":source,\
                  "compilation":compilation,\
-                 "notes":notes})
+                 "notes":notes, \
+                 "county": county, \
+                 "fips":fips})
+                 
     count += 1
   print(count)
   return jsonify({'num_entries': count});

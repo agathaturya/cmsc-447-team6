@@ -1,9 +1,7 @@
 #Date	Facility Type	State	Canonical Facility Name	Pop Tested	Pop Tested Positive	Pop Tested Negative	Pop Deaths	Pop Recovered	Staff Tested	Staff Tested Positive	Staff Tested Negative	Staff Deaths	Staff Recovered	Source	Compilation	Notes
 
-
 import requests
 import json
-
 import rest_api as ra
 import findFips as ff
 
@@ -56,6 +54,7 @@ if __name__ == "__main__":
             fips = countyStateFips[(county, state)]
             print("%s FOUND: %s" % (canonical_facility_name, fips))
         except KeyError:
+            county = "Unknown"
             fips = "00000"
             print("%s NOT FOUND" % canonical_facility_name)
         #-----------------------------------------------------------------------------
@@ -77,6 +76,7 @@ if __name__ == "__main__":
                  "source":source,\
                  "compilation":compilation,\
                  "notes":notes, \
+                 "county": county, \
                  "fips":fips}
         #print(entry)
         

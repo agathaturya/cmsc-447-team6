@@ -40,9 +40,10 @@ def post_prison_covid_data():
   count = 0
 
   for i in data:
+
     date  = i['date']
     d = datetime.datetime.strptime(date, "%Y-%m-%d")
-    
+
     facility_type = i['facility_type']
     state = i['state']
     canonical_facility_name = i['canonical_facility_name']
@@ -81,7 +82,7 @@ def post_prison_covid_data():
                  "notes":notes, \
                  "county": county, \
                  "fips":fips})
-                 
+
     count += 1
   print(count)
   return jsonify({'num_entries': count});

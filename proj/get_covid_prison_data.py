@@ -81,6 +81,7 @@ if __name__ == "__main__":
         #print(entry)
         
         data_list.append(entry)
+    data_list.remove(data_list[0])
     print(len(data_list))
     formatted_json_data = {"data":data_list}
     formatted_json_data = json.dumps(formatted_json_data)

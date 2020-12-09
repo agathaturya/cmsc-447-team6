@@ -2,6 +2,8 @@
 #Creates a dictionary with key values as state and county, value is the fips number
 #csv source: https://github.com/kjhealy/fips-codes/blob/master/county_fips_master.csv
 
+import csv
+
 def createFipsDict():
 
     csv_file = open("county_fips_master.csv", "r")
@@ -21,6 +23,18 @@ def createFipsDict():
         countyFips[ (row[1], row[3]) ] = row[0]
 
     return countyFips
+
+
+def createPrisonDict(prisonData):
+
+    #Create dictionary for prisons, state, and respective county
+    prisonState = { ("Facility_Name", "State") : "County" }
+
+    for each in prisonData:
+
+        prisonState[ (each["facility_name"], each["name"]) ] = each["county"]
+
+    return prisonState
 
 
 if __name__ == "__main__":

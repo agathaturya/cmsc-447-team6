@@ -6,8 +6,10 @@ import csv
 
 def createFipsDict():
 
-    csv_file = open("county_fips_master.csv", "r")
+    csv_file = open("county_fips_master.csv", "r", encoding="utf-8", errors='ignore')
+    
     file_contents = csv_file.readlines()
+    
     csv_file.close()
 
     #Create dictionary for counties and their respective fips number

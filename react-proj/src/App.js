@@ -14,6 +14,7 @@ function App() {
     const [queryT, updateQueryT] = useState('');
     const [mapData, setMapData] = React.useState([]);
     const [covidData, setCovidData] = React.useState([]);
+    const [prisonData, setPrisonData] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
 
     console.log('data', covidData);
@@ -44,12 +45,21 @@ function App() {
     //covid data
     React.useEffect(() => {
     //covid data
-    d3.json("http://localhost:5000/get_us_data_by_date/2020-12-01/").then((d) => {
+    d3.json("http://localhost:5000/get_us_data_by_date/2020-12-04/").then((d) => {
       setCovidData(d);
-
+      //map data
     d3.json("https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-states/us-albers-counties.json").then((d) => {
         setMapData(d);
+        d3.json("http://localhost:5000/get_prison_covid_data/").then((d) =>{
+        setPrisonData(d)
         setLoading(false);
+
+
+
+        });
+
+        
+        
     });
 
 
@@ -62,10 +72,10 @@ function App() {
     <>
      <div className="App">
          <h1>COVID-19 Cases on 12/01/2020</h1>
-         <h2>Click to Toggle between Cases and Deaths, Hover to see specific county information</h2>
+         <h2>Click to Toggle between Cases and Deaths, Hover to see specific county information. Zoom in/out with your trackpad/mouse wheel</h2>
     <header className="App-header">
     {loading && <div>loading</div>}
-    {!loading && <CovidMap mapData={mapData} covidData={covidData} width={width} height={height} />}
+    {!loading && <CovidMap mapData={mapData} covidData={covidData} width={width} height={height} prisonData={prisonData}/>}
       </header>
      </div>
      <h1 style={{color: 'red'}}>COVID-19 DATABASE</h1>

@@ -78,7 +78,7 @@ function App() {
  return (
    <>
      <div className="App">
-         <h1>COVID-19 Cases on 12/01/2020</h1>
+         <h1>COVID-19 Cases on 12/04/2020</h1>
          <h2>Click to Toggle between Cases and Deaths, Hover to see specific county information. Zoom in/out with your trackpad/mouse wheel</h2>
     <header className="App-header">
     {loading && <div>loading</div>}
@@ -102,7 +102,7 @@ function App() {
 
     <aside>
           <form className = "search">
-                <label><strong>SEARCH(</strong><strong style={{color:'blue'}}>DATE</strong><strong>) </strong></label>
+                <label><strong>SEARCH(</strong><strong style={{color:'blue'}}>DATE (YYYY-MM-DD)</strong><strong>) </strong></label>
                 <input type="text" value={queryD} onChange={handleOnSearchD}/><br></br><br></br>
           </form>
         </aside>

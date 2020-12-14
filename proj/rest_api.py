@@ -141,6 +141,19 @@ def get_us_counties_covid_data_by_date(date):
     result.append(i)
   return json.dumps(result, default=str)
 
+#get national covid data
+@app.route('/get_us_data/', methods=['GET'])
+def get_us_counties_covid_data():
+  result = []
+  doc = mongo_us_covid.db.us_counties_covid_data
+  for i in doc.find():
+    print(i)
+    print()
+    print()
+    result.append(i)
+  return json.dumps(result, default=str)
+
+
 #VVV----------Filters added by Leon----------VVV
 
 #get data filted by county

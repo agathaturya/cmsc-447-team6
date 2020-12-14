@@ -102,11 +102,7 @@ function App() {
 
     <aside>
           <form className = "search">
-<<<<<<< HEAD
                 <label><strong>SEARCH(</strong><strong style={{color:'blue'}}>DATE</strong><strong>)</strong><strong>(</strong><strong style={{color:'blue'}}>YYYY-MM-DD</strong><strong>) </strong></label>
-=======
-                <label><strong>SEARCH(</strong><strong style={{color:'blue'}}>DATE (YYYY-MM-DD)</strong><strong>) </strong></label>
->>>>>>> 9903022020993395bc9186933bd7888435427239
                 <input type="text" value={queryD} onChange={handleOnSearchD}/><br></br><br></br>
           </form>
         </aside>

@@ -58,15 +58,14 @@ function App() {
 
     d3.json("https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-states/us-albers-counties.json").then((d) => {
         setMapData(d);
-        setLoading(false);
-
-    d3.json("http://localhost:5000/get_us_data/").then((d) => {
-      setCovidDataU(d);
-      setLoadingT(false);
 
      d3.json("http://localhost:5000/get_prison_covid_data/").then((d) =>{
 	setPrisonData(d)
+	setLoading(false);
     
+    d3.json("http://localhost:5000/get_us_data/").then((d) => {
+      setCovidDataU(d);
+      setLoadingT(false);
     });
     });
 

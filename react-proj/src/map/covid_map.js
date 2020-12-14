@@ -68,8 +68,10 @@ function CovidMap({ mapData, covidData, width, height, prisonData }) {
     .html(function (event, d) {
       //this is shown on the tooltip
       var str = '<div style="text-align:center">';
-      var date_string = "12/2/2020";
-      var prison_info = prisonDataDict.get(d.properties.state).get(date_string);
+      var date_string = "7/9/2020";
+      var prison_info;
+      if(prisonDataDict)
+      prison_info = prisonDataDict.get(d.properties.state).get(date_string);
       console.log(prison_info);
       var prison_str = "";
 

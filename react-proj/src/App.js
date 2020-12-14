@@ -86,7 +86,7 @@ function App() {
       </header>
      </div>
      <h1 style={{color: 'red'}}>COVID-19 DATABASE</h1>
-     <h2>Enter County, State, and Date(YY-MM-DD) for specific county information</h2>
+     <h2>Enter County, State, and Date(YYYY-MM-DD) for specific county information. Do not press Enter key, search is automatic</h2>
      <aside>
           <form className = "search">
                 <label><strong>SEARCH(</strong><strong style={{color:'black'}}>COUNTY</strong><strong>) </strong></label>
@@ -102,13 +102,13 @@ function App() {
 
     <aside>
           <form className = "search">
-                <label><strong>SEARCH(</strong><strong style={{color:'blue'}}>DATE</strong><strong>) </strong></label>
+                <label><strong>SEARCH(</strong><strong style={{color:'blue'}}>DATE</strong><strong>)</strong><strong>(</strong><strong style={{color:'blue'}}>YYYY-MM-DD</strong><strong>) </strong></label>
                 <input type="text" value={queryD} onChange={handleOnSearchD}/><br></br><br></br>
           </form>
         </aside>
 
      {loadingT ? (
-        "Loading...(1 minute or so)"
+        "Loading..."
       ) : (
      <div>
 	<strong  id="CO" style={{color: 'black'}}>COUNTY:</strong><br></br><br></br>
